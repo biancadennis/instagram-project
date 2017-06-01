@@ -45,8 +45,8 @@ module.exports = function(sequelize, DataTypes) {
 	  },
     classMethods: {
       associate: function(models) {
-        models.post.belongsTo(models.user);
-        models.post.hasMany(models.comment);
+        models.photo.belongsTo(models.user);
+        models.photo.hasMany(models.comment);
       },
 			findWithPhotoID: function(photoID) {
 				return(this.findOne({
