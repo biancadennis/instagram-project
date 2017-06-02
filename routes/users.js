@@ -42,7 +42,7 @@ passport.deserializeUser(function(id, done) {
 
 // Sign up.
 router.get('/sign-up', function(request, response) {
-	response.render('user/sign_up', {
+	response.render('signup', {
 		user: {}
 	})
 });
@@ -55,10 +55,10 @@ router.post('/sign-up', function(request, response) {
 			name:     request.body.name
 		}).then(function(user) {
 			request.login(user, function(error) {
-				response.redirect('/');
+				response.redirect('/users/timber');
 			});
 		}).catch(function(error) {
-			response.render('user/sign_up', {
+			response.render('signup', {
 				user:   request.body,
 				errors: error.errors
 			});
@@ -81,4 +81,11 @@ router.get('/log-out', function(request, response) {
 	response.redirect('/');
 });
 
+router.get('/timber', function(request, response){
+    User.findAll().then(function(users) {
+        response.render('users', {
+            users:users
+        });
+    });
+});
 module.exports = router;
