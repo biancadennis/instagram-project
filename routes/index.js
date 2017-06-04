@@ -3,10 +3,10 @@ var router        = express.Router();
 var multer        = require('multer');
 var sharp         = require('sharp');
 var models        = require('../models/index');
-var photo         = models.photo;
+var Photo         = models.photo;
 // for S3
 // var uploadHandler = multer();
-var uploadHandler = multer({dest: 'public/images/posts'});
+var uploadHandler = multer({dest: 'public/images/photos'});
 
 
 
@@ -18,14 +18,14 @@ router.get('/', function(req, res, next) {
 router.get('/new', function(request, response) {
 	if (true)
 		response.render('photoupload/new', {
-			post: {}
+			photo: {}
 		});
 	else
 		response.redirect('/user/log-in');
 });
 
 router.post('/index', uploadHandler.single('image'), function(request, response) {
-	photo.create({
+	Photo.create({
 		title:         request.body.title,
 		// body:          request.body.body,
 		slug:          request.body.slug,
@@ -36,9 +36,13 @@ router.post('/index', uploadHandler.single('image'), function(request, response)
 		.max()
 		.withoutEnlargement()
 		.toBuffer()
-    .toFile(`${request.file.path}-thumbnail`, function() {
-			response.redirect(post.url);
+    .toFile(`${request.file.path}-thumbnail`, function(photoo) {
+			// response.redirect(post.url);
+      response.render('photoupload/new', {
+        photo: photo
+      });
 		});
+
 		// .then(function(thumbnail) {
 		// 	s3.upload({
 		// 		Bucket:     'instagram',
@@ -60,11 +64,19 @@ router.post('/index', uploadHandler.single('image'), function(request, response)
 		// });
 	}).catch(function(error) {
 		response.render('photoupload/new', {
-			// post:   request.body,
 			errors: error.error
 		});
 	});
 });
 
+// Show.
+router.get('/:slug', function(request, response) {
+	Photo.findWithSlug(request.params.slug).then(function(photo) {
+		response.render('photo/show', {
+			photo:    photo,
+			comment: {}
+		});
+	});
+});
 
 module.exports = router;
