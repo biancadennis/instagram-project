@@ -72,7 +72,7 @@ router.get('/log-in', function(request, response) {
 });
 
 router.post('/log-in', passport.authenticate('local'), function(request, response) {
-	response.redirect('/');
+	response.redirect('/users/timber');
 });
 
 // Log out.
