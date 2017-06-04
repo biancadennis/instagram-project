@@ -1,15 +1,15 @@
 extends ../layout
 
-block body
+block content
 	h1 New Photo
-	include ../errors
+	include ../error
 	form(action='/index', method='post', enctype='multipart/form-data')
 		.form-group
 			label(for='title') Title
-			input.form-control(name='title', value=post.title, autofocus)
-		//- .form-group
-		//- 	label(for='slug') Slug
-		//- 	input.form-control(name='slug', value=post.slug)
+			input.form-control(name='title', value=photo.title, autofocus)
+		.form-group
+			label(for='slug') Slug
+			input.form-control(name='slug', value=photo.slug)
 		.form-group
 			label(for='image') Image
 			input.form-control(name='image', type='file')
