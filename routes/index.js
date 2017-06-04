@@ -4,7 +4,9 @@ var multer        = require('multer');
 var sharp         = require('sharp');
 var models        = require('../models/index');
 var photo         = models.photo;
-var uploadHandler = multer();
+// for S3
+// var uploadHandler = multer();
+var uploadHandler = multer({dest: 'public/images/posts'});
 
 
 
@@ -34,8 +36,8 @@ router.post('/index', uploadHandler.single('image'), function(request, response)
 		.max()
 		.withoutEnlargement()
 		.toBuffer()
-    response.render('photoupload/new', {
-			// post:   request.body,
+    .toFile(`${request.file.path}-thumbnail`, function() {
+			response.redirect(post.url);
 		});
 		// .then(function(thumbnail) {
 		// 	s3.upload({
@@ -55,7 +57,7 @@ router.post('/index', uploadHandler.single('image'), function(request, response)
 		// 			response.redirect(photo.url);
 		// 		});
 		// 	});
-		});
+		// });
 	}).catch(function(error) {
 		response.render('photoupload/new', {
 			// post:   request.body,
