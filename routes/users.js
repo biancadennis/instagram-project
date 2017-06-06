@@ -55,7 +55,7 @@ router.post('/sign-up', function(request, response) {
 			name:     request.body.name
 		}).then(function(user) {
 			request.login(user, function(error) {
-				response.redirect('/users/timber');
+				response.redirect(`/users/${request.user.id}`);
 			});
 		}).catch(function(error) {
 			response.render('signup', {
@@ -72,7 +72,7 @@ router.get('/log-in', function(request, response) {
 });
 
 router.post('/log-in', passport.authenticate('local'), function(request, response) {
-	response.redirect('/users/timber');
+	response.redirect(`/users/${request.user.id}`);
 });
 
 // Log out.
@@ -81,11 +81,21 @@ router.get('/log-out', function(request, response) {
 	response.redirect('/');
 });
 
-router.get('/timber', function(request, response){
-    User.findAll().then(function(users) {
-        response.render('users', {
-            users:users
+// router.get('/timber', function(request, response){
+//     User.findAll().then(function(users) {
+//         response.render('users', {
+//             users:users
+//         });
+//     });
+// });
+
+//User Page
+router.get('/:id', function(request, response) {
+    User.findById(request.params.id).then(function(user) {
+        response.render('user/userpage', {
+            user: user
         });
     });
 });
+
 module.exports = router;

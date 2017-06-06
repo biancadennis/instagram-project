@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+    if user
+        h1= user.name
+        p member since #[small= date(user.createdAt)]
+        //- if project.imageFilename
+        //-     p: img(src=project.imageThumbnailUrl)
+        //- a.btn.btn-primary.btn-sm(href=`${project.url}/delete`) Delete Project
+    else
+        h2 Not Found
+        p That User Does Not Exist
