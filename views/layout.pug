@@ -1,7 +1,24 @@
 doctype html
 html
   head
-    title= title
+    title Bianca Dennis
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
   body
+    nav.navbar.navbar-inverse
+      div.container-fluid
+        div.collapse.navbar-collapse#bs-example-navbar-collapse-1
+          ul.nav.navbar-nav
+            li
+              h1 Timber
+            li
+              a(href='/') Timber
+            li
+              a(href='/users/log-in') login
+            li
+              a(href='/users/log-out') logout
+            li
+              a(href='/users/sign-up') signup
+            li
+              a(href='/users/upload-photo') upload
     block content

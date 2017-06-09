@@ -1,10 +1,17 @@
 var express  = require('express');
+var multer   = require('multer');
+var sharp    = require('sharp');
 var passport = require('passport');
 var local    = require('passport-local');
 var bcrypt   = require('bcrypt');
 var models   = require('../models/index');
+var aws      = require('aws-sdk');
 var User     = models.user;
+var Comment  = models.comment;
+var Photo		 = models.photo;
 var router   = express.Router();
+var uploadHandler = multer();
+var s3            = new aws.S3({region: 'us-east-1'});
 
 // Passport.
 passport.use(
@@ -42,7 +49,7 @@ passport.deserializeUser(function(id, done) {
 
 // Sign up.
 router.get('/sign-up', function(request, response) {
-	response.render('user/sign_up', {
+	response.render('signup', {
 		user: {}
 	})
 });
@@ -55,10 +62,10 @@ router.post('/sign-up', function(request, response) {
 			name:     request.body.name
 		}).then(function(user) {
 			request.login(user, function(error) {
-				response.redirect('/');
+				response.redirect('/users/timber');
 			});
 		}).catch(function(error) {
-			response.render('user/sign_up', {
+			response.render('signup', {
 				user:   request.body,
 				errors: error.errors
 			});
@@ -68,11 +75,68 @@ router.post('/sign-up', function(request, response) {
 
 // Log in.
 router.get('/log-in', function(request, response) {
-	response.render('user/log_in')
+	response.render('users/log_in')
 });
 
 router.post('/log-in', passport.authenticate('local'), function(request, response) {
-	response.redirect('/');
+	response.redirect('/users/timber');
+});
+
+// New.
+router.get('/upload-photo', function(request, response) {
+	if (request.user)
+		response.render('photoupload/new', {
+			photo: {}
+		});
+	else {
+		response.redirect('/users/log-in');
+	}
+});
+
+//Upload a photo
+router.post('/upload-photo', uploadHandler.single('image'), function(request, response) {
+	Photo.create({
+		caption:       request.body.caption,
+		userId:        request.user.id,
+	}).then(function(photo) {
+		sharp(request.file.buffer)
+		.resize(300, 300)
+		.max()
+		.withoutEnlargement()
+		.toBuffer()
+		.then(function(thumbnail) {
+			s3.upload({
+				Bucket:     'timber-nycda',
+				Key:        `photos/${photo.id}`,
+				Body:        request.file.buffer,
+				ACL:        'public-read',
+				ContentType: request.file.mimetype
+			}, function(error, data) {
+				s3.upload({
+					Bucket:     'timber-nycda',
+					Key:        `photos/${photo.id}-thumbnail`,
+					Body:        thumbnail,
+					ACL:        'public-read',
+					ContentType: request.file.mimetype
+				}, function(error, data) {
+					response.redirect(`/users/photo/${photo.id}`);
+				});
+			});
+		});
+	}).catch(function(error) {
+		response.render('photoupload/new', {
+			photo:   request.body,
+			errors: error.errors
+		});
+	});
+});
+
+router.get('/photo/:id', function(request, response) {
+    Photo.findById(request.params.id).then(function(photo) {
+        response.render('photoupload/show', {
+            photo: photo
+        });
+    });
 });
 
 // Log out.
@@ -81,4 +145,11 @@ router.get('/log-out', function(request, response) {
 	response.redirect('/');
 });
 
+router.get('/timber', function(request, response){
+    User.findAll().then(function(users) {
+        response.render('users', {
+            users:users
+        });
+    });
+});
 module.exports = router;

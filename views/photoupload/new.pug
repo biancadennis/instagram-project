@@ -2,16 +2,13 @@ extends ../layout
 
 block content
 	h1 New Photo
-	include ../error
-	form(action='/index', method='post', enctype='multipart/form-data')
-		.form-group
-			label(for='title') Title
-			input.form-control(name='title', value=photo.title, autofocus)
-		.form-group
-			label(for='slug') Slug
-			input.form-control(name='slug', value=photo.slug)
+	include ../errors
+	form(action='/users/upload-photo', method='post', enctype='multipart/form-data')
 		.form-group
 			label(for='image') Image
 			input.form-control(name='image', type='file')
+		.form-group
+			label(for='Caption') Caption
+			input.form-control(name='caption', value=photo.caption)
 		.form-group
 			input.btn.btn-primary.btn-lg(type='submit', value='Create')

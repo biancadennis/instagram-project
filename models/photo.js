@@ -18,26 +18,26 @@ module.exports = function(sequelize, DataTypes) {
 		// 		}
 		// 	}
 		// },
-		imageFilename: {
-			type:         DataTypes.STRING,
-			allowNull:    false,
-			defaultValue: '',
-			validate: {
-				notEmpty: {
-					msg: 'Image is required'
-				}
-			}
-		}
+		// imageFilename: {
+		// 	type:         DataTypes.STRING,
+		// 	allowNull:    false,
+		// 	defaultValue: '',
+		// 	validate: {
+		// 		notEmpty: {
+		// 			msg: 'Image is required'
+		// 		}
+		// 	}
+		// }
 	}, {
 		defaultScope: {
 			order: [['createdAt', 'DESC']]
 		},
 	  getterMethods: {
 			url: function() {
-				return(`/user/${this.photoID}`);
+				return(`/users/${this.photoID}`);
 			},
 			imageUrl: function() {
-				return(`/images/photos/${this.imageFilename}`);
+				return(`https://s3.amazonaws.com/timber-nycda/photos/${this.id}`);
 			},
 			imageThumbnailUrl: function() {
 				return(`${this.imageUrl}-thumbnail`);

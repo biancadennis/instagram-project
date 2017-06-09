@@ -21,7 +21,7 @@ router.get('/new', function(request, response) {
 			photo: {}
 		});
 	else
-		response.redirect('/user/log-in');
+		response.redirect('/users/log-in');
 });
 
 router.post('/index', uploadHandler.single('image'), function(request, response) {
@@ -65,16 +65,6 @@ router.post('/index', uploadHandler.single('image'), function(request, response)
 	}).catch(function(error) {
 		response.render('photoupload/new', {
 			errors: error.error
-		});
-	});
-});
-
-// Show.
-router.get('/:slug', function(request, response) {
-	Photo.findWithSlug(request.params.slug).then(function(photo) {
-		response.render('photo/show', {
-			photo:    photo,
-			comment: {}
 		});
 	});
 });
