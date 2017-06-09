@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+	.main.container
+		.row
+			.col-md-6.col-md-offset-3
+				h1 Log In
+				include ../errors
+				form(action='/users/log-in', method='post')
+					div.form-group
+						label(for='username') Email
+						input.form-control(name='username', autofocus)
+					div.form-group
+						label(for='password') Password
+						input.form-control(name='password', type='password')
+					div.form-group
+						input.btn.btn-primary.btn-lg(type='submit', value='Log In')

@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+	if photo
+		.row
+			.col-xs-7
+				p= photo.caption
+				p: a(href=photo.imageUrl, target=_blank)
+					img(src=photo.imageThumbnailUrl)
+	else
+		h2 Not Found
+		p That photo does not exist.

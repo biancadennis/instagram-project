@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+	h1 New Photo
+	include ../errors
+	form(action='/users/upload-photo', method='post', enctype='multipart/form-data')
+		.form-group
+			label(for='image') Image
+			input.form-control(name='image', type='file')
+		.form-group
+			label(for='Caption') Caption
+			input.form-control(name='caption', value=photo.caption)
+		.form-group
+			input.btn.btn-primary.btn-lg(type='submit', value='Create')
