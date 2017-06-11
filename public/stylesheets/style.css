@@ -6,3 +6,13 @@ body {
 a {
   color: #00B7FF;
 }
+.photoDisplay {
+  text-align: center;
+}
+.mainImage {
+  height: 500px;
+}
+.imageContainer {
+display: flex;
+justify-content: center;
+}

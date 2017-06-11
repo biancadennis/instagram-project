@@ -2,11 +2,12 @@ extends ../layout
 
 block content
 	if photo
-		.row
-			.col-xs-7
-				p= photo.caption
+		.row.imageContainer
+			.col-xs-7.photoDisplay
+				h1= photo.caption
 				p: a(href=photo.imageUrl, target=_blank)
-					img(src=photo.imageThumbnailUrl)
+					img.mainImage(src=photo.imageUrl)
+				a.btn.btn-primary.btn-sm(href=`${photo.id}/delete`) Delete Photo
 	else
 		h2 Not Found
 		p That photo does not exist.

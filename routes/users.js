@@ -131,6 +131,21 @@ router.post('/upload-photo', uploadHandler.single('image'), function(request, re
 	});
 });
 
+//Deletes a photo
+router.get('/photo/:id/delete', function(request,response) {
+	console.log('delete route')
+	Photo.findOne({
+		where: {
+			id: request.params.id
+		}
+	}).then(function(photo){
+		photo.destroy().then(function() {
+			response.redirect(`/users/${request.user.id}`)
+			console.log('deleted');
+		});
+	});
+});
+
 router.get('/photo/:id', function(request, response) {
     Photo.findById(request.params.id).then(function(photo) {
         response.render('photoupload/show', {
@@ -153,6 +168,7 @@ router.get('/log-out', function(request, response) {
 //     });
 // });
 
+
 //User Page
 router.get('/:id', function(request, response) {
     User.findById(request.params.id).then(function(user) {
@@ -161,5 +177,6 @@ router.get('/:id', function(request, response) {
         });
     });
 });
+
 
 module.exports = router;
