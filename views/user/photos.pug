@@ -1,0 +1,6 @@
+.list-group
+  each photo in photos
+    a.list-group-item(href=`/users/photo/${photo.id}`)
+        h4.list-group-item-heading #{photo.caption} #[small= date(photo.createdAt)]
+        p.list-group-item-text By #{photo.user.name}
+        img(src=photo.imageThumbnailUrl)

@@ -155,11 +155,25 @@ router.get('/log-out', function(request, response) {
 
 //User Page
 router.get('/:id', function(request, response) {
-    User.findById(request.params.id).then(function(user) {
-        response.render('user/userpage', {
-            user: user
-        });
+  User.findById(request.params.id).then(function(user) {
+    Photo.findAll({include: User}).then(function(photos) {
+      response.render('user/userpage', {
+        user: user,
+        photos: photos
+      });
     });
+  });
+});
+
+//view photos
+router.get('/', function(request, response) {
+	Photo.findAll({
+		include: User
+	}).then(function(photos) {
+		response.render('userpage/photos', {
+			photos: photos
+		});
+	});
 });
 
 module.exports = router;

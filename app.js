@@ -33,13 +33,19 @@ app.use(session({secret: 'lzxjaSFIHhwoeufhgw983roerlijsdfoi'}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', index);
-app.use('/users', users);
 
 app.locals.date = function(date) {
   return(dateFormat(date,' mmmm yyyy'));
 };
 
+// Middleware.
+app.use(function(request, response, next) {
+  response.locals.currentUser = request.user;
+  next();
+});
+
+app.use('/', index);
+app.use('/users', users);
 
 
 // catch 404 and forward to error handler

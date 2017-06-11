@@ -1,12 +1,10 @@
 extends ../layout
 
 block content
-    if user
+    if currentUser
         h1= user.name
         p member since #[small= date(user.createdAt)]
-        //- if project.imageFilename
-        //-     p: img(src=project.imageThumbnailUrl)
-        //- a.btn.btn-primary.btn-sm(href=`${project.url}/delete`) Delete Project
+        include photos
     else
         h2 Not Found
         p That User Does Not Exist
