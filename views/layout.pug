@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title Bianca Dennis
+    title Timber
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
   body
@@ -21,4 +21,7 @@ html
               a(href='/users/sign-up') signup
             li
               a(href='/users/upload-photo') upload
+            if currentUser
+              li
+                a(href=`/users/${currentUser.id}`) user
     block content
