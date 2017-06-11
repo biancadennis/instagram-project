@@ -132,11 +132,26 @@ router.post('/upload-photo', uploadHandler.single('image'), function(request, re
 });
 
 router.get('/photo/:id', function(request, response) {
-    Photo.findById(request.params.id).then(function(photo) {
+    Photo.findById(request.params.id, {
+			include: [
+				Comment
+			]
+		}).then(function(photo) {
         response.render('photoupload/show', {
             photo: photo
         });
     });
+});
+
+router.post('/photo/:id/comments', function(request, response) {
+	Photo.findById(request.params.id).then(function(photo) {
+		photo.createComment({
+			body:   request.body.body,
+			author: request.body.author
+		}).then(function(comment) {
+			response.redirect(`/users/photo/${photo.id}`);
+		});
+	});
 });
 
 // Log out.
