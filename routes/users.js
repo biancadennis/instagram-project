@@ -146,6 +146,50 @@ router.get('/photo/:id/delete', function(request,response) {
 	});
 });
 
+//Update Photo
+router.get('/photo/:id/update', function(request, response) {
+	if (request.user) {
+		Photo.findOne({
+			where: {
+				id: request.params.id
+			}
+		}).then(function(photo){
+			response.render('photoupload/show-new', {
+				photo:			photo,
+				caption:		request.body.caption,
+				userId:			request.user.id
+			});
+		})
+	}
+	else {
+		response.redirect('/users/log-in');
+	}
+});
+
+router.post('/photo/:id/update', function(request, response) {
+	Photo.findOne({
+		where: {
+			id: request.params.id
+		}
+	}).then(function(photo){
+		console.log(request.body);
+		console.log(request.body.caption);
+		photo.update({
+			caption:       request.body.caption,
+			userId:        request.user.id
+		}).then(function(error, data) {
+			response.redirect(`/users/photo/${photo.id}`)
+		})
+	}).catch(function(error) {
+		response.render('photoupload/new', {
+			photo:   request.body,
+			errors: error.errors
+		});
+	});
+});
+
+
+//end of update
 router.get('/photo/:id', function(request, response) {
     Photo.findById(request.params.id, {
 			include: [
