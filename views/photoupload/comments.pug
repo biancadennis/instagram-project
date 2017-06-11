@@ -1,0 +1,4 @@
+if photo.comments
+    each comment in photo.comments
+        h4.list-group-item-heading #{comment.author} #[small= date(comment.createdAt)]
+        p.list-group-item-text= comment.body
