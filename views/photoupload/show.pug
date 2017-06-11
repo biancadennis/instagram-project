@@ -16,7 +16,8 @@ block content
 						label(for='body') Body
 						textarea.form-control(name='body')
 					.form-group
-						input.btn.btn-primary.btn-lg(type='submit', value='Create')
+						input.btn.btn-primary.btn-lg(type='submit', value='Comment')
+				p: a(href=`/users/photos/${hashtags}`) #{hashtags}
 				each comment in photo.comments
 					h4.list-group-item-heading #{comment.author} #[small= date(comment.createdAt)]
 					p.list-group-itnme-text= comment.body

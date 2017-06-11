@@ -93,11 +93,34 @@ router.get('/upload-photo', function(request, response) {
 	}
 });
 
+// create migration that adds a column to the photo table (column: hashtags)
+// customize Photo.create(), add hashtags key
+// create another route that receives the request to '/photos/tags/:tag'
+// in view: make an anchor tag that routes to the custom route. send the tag as a param
+// in the custom route, receive the tag, then find all the photos with that tag
+// then render the VIEW and give it all the photos that you found.
+
+router.get('/photos/:tags', function(request, response) {
+	console.log(request.params.tags);
+	Photo.findAll({
+		where: {
+			hashtags: request.params.tags
+		}
+	}).then(function(photosWithTags) {
+		response.render('photo/photo', {
+			photos: photosWithTags
+		})
+	})
+})
+
 //Upload a photo
 router.post('/upload-photo', uploadHandler.single('image'), function(request, response) {
+	console.log('req the body');
+	console.log(request.body.tags);
 	Photo.create({
 		caption:       request.body.caption,
 		userId:        request.user.id,
+		hashtags:      request.body.tags
 	}).then(function(photo) {
 		sharp(request.file.buffer)
 		.resize(300, 300)
@@ -152,8 +175,11 @@ router.get('/photo/:id', function(request, response) {
 				Comment
 			]
 		}).then(function(photo) {
+			console.log('photooooooo');
+			console.log(photo);
         response.render('photoupload/show', {
-            photo: photo
+            photo: photo,
+						hashtags: photo.hashtags
         });
     });
 });

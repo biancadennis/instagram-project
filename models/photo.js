@@ -9,6 +9,10 @@ module.exports = function(sequelize, DataTypes) {
 				}
 			}
 		},
+		hashtags: {
+			type:      DataTypes.STRING,
+			allowNull: true
+		},
 		// body: {
 		// 	type:      DataTypes.TEXT,
 		// 	allowNull: false,

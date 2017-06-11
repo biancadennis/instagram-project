@@ -1,4 +1,8 @@
 .list-group
     each photo in photos
-        a.list-group-item(href=photo.imageThumbnailUrl)
-
+      .row.imageContainer
+         .col-xs-7.photoDisplay
+           h1= photo.caption
+           p= photo.hashtags
+           img.mainImage(src=photo.imageUrl)
+      //- p= photo.caption
