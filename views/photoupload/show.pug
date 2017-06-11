@@ -7,6 +7,7 @@ block content
 				h1= photo.caption
 				p: a(href=photo.imageUrl, target=_blank)
 					img.mainImage(src=photo.imageUrl)
+				a.btn.btn-primary.btn-sm(href=`${photo.id}/update`) Edit
 				a.btn.btn-primary.btn-sm(href=`${photo.id}/delete`) Delete Photo
 	else
 		h2 Not Found
