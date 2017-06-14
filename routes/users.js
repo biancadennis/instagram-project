@@ -93,30 +93,11 @@ router.get('/upload-photo', function(request, response) {
 	}
 });
 
-// create migration that adds a column to the photo table (column: hashtags)
-// customize Photo.create(), add hashtags key
-// create another route that receives the request to '/photos/tags/:tag'
-// in view: make an anchor tag that routes to the custom route. send the tag as a param
-// in the custom route, receive the tag, then find all the photos with that tag
-// then render the VIEW and give it all the photos that you found.
-
-router.get('/photos/:tags', function(request, response) {
-	console.log(request.params.tags);
-	Photo.findAll({
-		where: {
-			hashtags: request.params.tags
-		}
-	}).then(function(photosWithTags) {
-		response.render('photo/photo', {
-			photos: photosWithTags
-		})
-	})
-})
-
 //Upload a photo
 router.post('/upload-photo', uploadHandler.single('image'), function(request, response) {
-	console.log('req the body');
-	console.log(request.body.tags);
+	// console.log('req the body');
+	// console.log(request.body.tags);
+	// console.log('type of userID', typeof request.user.id);
 	Photo.create({
 		caption:       request.body.caption,
 		userId:        request.user.id,
@@ -135,6 +116,9 @@ router.post('/upload-photo', uploadHandler.single('image'), function(request, re
 				ACL:        'public-read',
 				ContentType: request.file.mimetype
 			}, function(error, data) {
+				if (error) {
+					console.log('error', error);
+				}
 				s3.upload({
 					Bucket:     'timber-nycda',
 					Key:        `photos/${photo.id}-thumbnail`,
@@ -142,6 +126,7 @@ router.post('/upload-photo', uploadHandler.single('image'), function(request, re
 					ACL:        'public-read',
 					ContentType: request.file.mimetype
 				}, function(error, data) {
+					console.log('s3=>', data);
 					response.redirect(`/users/photo/${photo.id}`);
 				});
 			});
@@ -175,8 +160,8 @@ router.get('/photo/:id', function(request, response) {
 				Comment
 			]
 		}).then(function(photo) {
-			console.log('photooooooo');
-			console.log(photo);
+			// console.log('photooooooo');
+			// console.log(photo);
         response.render('photoupload/show', {
             photo: photo,
 						hashtags: photo.hashtags
@@ -195,19 +180,27 @@ router.post('/photo/:id/comments', function(request, response) {
 	});
 });
 
+// Photo Tags
+router.get('/photos/:tags', function(request, response) {
+	console.log(request.params.tags);
+	Photo.findAll({
+		where: {
+			hashtags: request.params.tags
+		}
+	}).then(function(photosWithTags) {
+		response.render('photo/photo', {
+			photos: photosWithTags
+		})
+	})
+});
+
+
 // Log out.
 router.get('/log-out', function(request, response) {
 	request.logout();
 	response.redirect('/');
 });
 
-// router.get('/timber', function(request, response){
-//     User.findAll().then(function(users) {
-//         response.render('users', {
-//             users:users
-//         });
-//     });
-// });
 
 
 //User Page

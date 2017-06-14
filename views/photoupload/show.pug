@@ -6,7 +6,7 @@ block content
 			.col-xs-7.photoDisplay
 				h1= photo.caption
 				p: a(href=photo.imageUrl, target=_blank)
-					img.mainImage(src=photo.imageUrl)
+					img.img-fluid.mainImage(src=photo.imageUrl)
 				a.btn.btn-primary.btn-sm(href=`${photo.id}/delete`) Delete Photo
 				form(action=`/users/photo/${photo.id}/comments`, method='post')
 					.form-group

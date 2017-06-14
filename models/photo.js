@@ -13,32 +13,13 @@ module.exports = function(sequelize, DataTypes) {
 			type:      DataTypes.STRING,
 			allowNull: true
 		},
-		// body: {
-		// 	type:      DataTypes.TEXT,
-		// 	allowNull: false,
-		// 	validate: {
-		// 		notEmpty: {
-		// 			msg: 'Body is required'
-		// 		}
-		// 	}
-		// },
-		// imageFilename: {
-		// 	type:         DataTypes.STRING,
-		// 	allowNull:    false,
-		// 	defaultValue: '',
-		// 	validate: {
-		// 		notEmpty: {
-		// 			msg: 'Image is required'
-		// 		}
-		// 	}
-		// }
 	}, {
 		defaultScope: {
 			order: [['createdAt', 'DESC']]
 		},
 	  getterMethods: {
 			url: function() {
-				return(`/users/${this.photoID}`);
+				return(`/users/${this.id}`);
 			},
 			imageUrl: function() {
 				return(`https://s3.amazonaws.com/timber-nycda/photos/${this.id}`);
@@ -55,7 +36,7 @@ module.exports = function(sequelize, DataTypes) {
 			findWithPhotoID: function(photoID) {
 				return(this.findOne({
 					where: {
-						photoID: photoID
+						id: photoID
 					},
 					include: [
 						sequelize.models.user,
