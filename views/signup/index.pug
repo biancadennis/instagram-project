@@ -1,14 +1,10 @@
-extends ../layout
-
 block content
   .main.container
     .row
       .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 If You're not a member yet...
         h1.display-4.m-b-2 Sign Up to Timber
-        h5 or
-          a(href="/users/log-in") Login Here
         include ../errors
-        // register form
         form(method='POST' action='/users/sign-up')
           div.form-group
             label(for='name') Name:
