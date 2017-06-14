@@ -5,9 +5,9 @@ block content
     .main.container
       .row
         .col-md-6.col-md-offset-3
-        h1= user.name
-        p member since #[small= date(user.createdAt)]
-        include photos
+            h1= user.name
+            p member since #[small= date(user.createdAt)]
+            a.btn.btn-primary.btn-lg(href='/users/upload-photo') Upload Photo
   else
     h2 Not Found
     p That User Does Not Exist

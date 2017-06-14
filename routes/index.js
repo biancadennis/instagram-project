@@ -4,6 +4,7 @@ var multer        = require('multer');
 var sharp         = require('sharp');
 var models        = require('../models/index');
 var Photo         = models.photo;
+var User     = models.user;
 // for S3
 // var uploadHandler = multer();
 // var uploadHandler = multer({dest: 'public/images/photos'});
@@ -68,5 +69,11 @@ var Photo         = models.photo;
 // 		});
 // 	});
 // });
-
+router.get('/', function(request, response) {
+	Photo.findAll({include: User}).then(function(photos) {
+		response.render('user/photos', {
+			photos: photos
+		});
+	});
+});
 module.exports = router;
