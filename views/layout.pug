@@ -14,15 +14,17 @@ html
               h1 Timber
             li
               a(href='/') Timber
-            li
-              a(href='/users/log-in') login
-            li
-              a(href='/users/log-out') logout
-            li
-              a(href='/users/sign-up') signup
-            li
-              a(href='/users/upload-photo') upload
+            if !currentUser
+              li
+                a(href='/users/log-in') login
             if currentUser
               li
-                a(href=`/users/${currentUser.id}`) user
+                a(href='/users/log-out') logout
+            li
+              a(href='/users/upload-photo')
+                span(class='glyphicon') &#xe027;
+            if currentUser
+              li
+                a(href=`/users/${currentUser.id}`)
+                  span(class='glyphicon glyphicon-user')
     block content

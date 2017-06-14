@@ -1,8 +1,3 @@
-body {
-
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-
 a {
   color: #00B7FF;
 }
@@ -14,6 +9,10 @@ a {
   width: 400px;
 }
 .imageContainer {
-  display: flex;
-  justify-content: center;
+display: flex;
+justify-content: center;
+}
+
+.userpagerow {
+  height: 400px;
 }
