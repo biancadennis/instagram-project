@@ -6,8 +6,8 @@ block content
 			.col-xs-7.photoDisplay
 				h1= photo.caption
 				p: a(href=photo.imageUrl, target=_blank)
-					img.mainImage(src=photo.imageUrl)
-				a.btn.btn-primary.btn-sm(href=`${photo.id}/update`) Edit
+					a.btn.btn-primary.btn-sm(href=`${photo.id}/update`) Edit
+					img.img-fluid.mainImage(src=photo.imageUrl)
 				a.btn.btn-primary.btn-sm(href=`${photo.id}/delete`) Delete Photo
 				form(action=`/users/photo/${photo.id}/comments`, method='post')
 					.form-group
@@ -17,8 +17,11 @@ block content
 						label(for='body') Body
 						textarea.form-control(name='body')
 					.form-group
-						input.btn.btn-primary.btn-lg(type='submit', value='Create')
-				include comments
+						input.btn.btn-primary.btn-lg(type='submit', value='Comment')
+				p: a(href=`/users/photos/${hashtags}`) #{hashtags}
+				each comment in photo.comments
+					h4.list-group-item-heading #{comment.author} #[small= date(comment.createdAt)]
+					p.list-group-itnme-text= comment.body
 
 	else
 		h2 Not Found

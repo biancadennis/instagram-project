@@ -11,8 +11,9 @@ a {
 }
 .mainImage {
   height: 500px;
+  width: 400px;
 }
 .imageContainer {
-display: flex;
-justify-content: center;
+  display: flex;
+  justify-content: center;
 }
